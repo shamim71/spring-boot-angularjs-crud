@@ -1,6 +1,9 @@
 package com.acme.product;
 
+import static com.acme.product.IntegrationTestUtil.convertObjectToJsonBytes;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -13,6 +16,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
+
+import com.acme.product.domain.Article;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -27,12 +32,24 @@ public class ServiceApplicationTests {
 	this.mvc.perform(get("/articles").accept(MediaType.parseMediaType("application/json;charset=UTF-8")))
 		.andExpect(status().isOk()).andExpect(content().contentType("application/json;charset=UTF-8"));
     }
-    
+
+    @Test
+    public void addArticle() throws Exception {
+
+	Article article = new Article();
+	article.setName("Cell Phone");
+	article.setDescription("Phone");
+	article.setCategory("Device");
+
+	this.mvc.perform(post("/articles").contentType(MediaType.APPLICATION_JSON_UTF8)
+		.content(convertObjectToJsonBytes(article))).andDo(print()).andExpect(status().isCreated());
+    }
+
     @Test
     public void getArticleByIdTest() throws Exception {
 	this.mvc.perform(get("/articles/1000").accept(MediaType.parseMediaType("application/json;charset=UTF-8")))
 		.andExpect(status().isOk()).andExpect(content().contentType("application/json;charset=UTF-8"))
 		.andExpect(jsonPath("$.name").value("Hello"));
     }
-    
+
 }

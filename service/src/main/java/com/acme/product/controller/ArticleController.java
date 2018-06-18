@@ -1,5 +1,6 @@
 package com.acme.product.controller;
 
+import java.net.URI;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import com.acme.product.domain.Article;
 import com.acme.product.service.ArticleService;
@@ -17,6 +20,8 @@ import com.acme.product.service.ArticleService;
 @RestController
 public class ArticleController extends AbstractWSController{
 
+
+    
     @Autowired
     ArticleService articleService;
     
@@ -30,8 +35,15 @@ public class ArticleController extends AbstractWSController{
     }
     
     @PostMapping(path="/articles")
-    public Article addArticle(@RequestBody Article article) {
-	return articleService.add(article);
+    public ResponseEntity<?> addArticle(@RequestBody Article article) {
+	Article a = articleService.add(article);
+	UriComponentsBuilder builder = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}");
+	URI location = builder.buildAndExpand(a.getId()).toUri();
+	
+/*	HttpHeaders headers = new HttpHeaders();
+	headers.add("Location", location.getPath());
+	return new ResponseEntity<Article>(a,headers,HttpStatus.CREATED);*/
+	return ResponseEntity.created(location).build();
     }
     
     @DeleteMapping("/articles/{id}")
