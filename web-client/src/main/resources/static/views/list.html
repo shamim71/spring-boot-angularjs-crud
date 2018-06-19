@@ -1,0 +1,61 @@
+
+<!-- Begin page content -->
+<div class="container">
+	<div class="row erp-page-header">
+			<div class="col-xs-12 col-md-6" style="padding-left: 0px;">
+				<h3>Product List</h3>
+			</div>		
+	</div>
+
+
+	<div class="row">
+		<div class="alert pull-left small" ng-show="showMessage"  ng-class="messageClass">
+			{{message}}
+		</div>		
+	</div>
+	
+	<div class="row">
+
+		<div class="col-md-3 form-group" >
+				<button type="button" ng-click="addNewItem()"
+					class="btn btn-default btn-xs">Add</button>
+		</div>
+
+
+	</div>
+
+	<div class="row">
+		<div class="col-md-12 form-group">
+		<table	class="table" ng-hide="pagedItems.length == '0'"  style="padding-left: 0px;">
+			<thead>
+				<tr>
+					<th class="col-md-3">Name</th>
+					<th>Description</th>
+					<th>Category</th>	
+					<th>&nbsp;</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr ng-repeat="obj in pagedItems | orderBy:sortingOrder:reverse">
+					<td>{{obj.name}}</td>
+					<td>{{obj.description}}</td>
+					<td>{{obj.category}}</td>
+									
+					<td align="right">
+						<table>
+							<tr>
+							<td><a  ng-href="#/article-details/{{obj.id}}" >Edit</a></td>
+							
+							<td>
+								<button style="margin-left:3px;" type="button"  ng-click="deleteArticle(obj)" class="btn btn-default btn-xs">Delete</button>
+							</td>
+							</tr>
+						</table>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		</div>
+	</div>
+
+</div>

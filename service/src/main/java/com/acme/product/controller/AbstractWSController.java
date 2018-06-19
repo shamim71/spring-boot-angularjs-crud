@@ -1,13 +1,17 @@
 package com.acme.product.controller;
 
+import java.net.URI;
 import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import com.acme.product.dto.ErrorInfo;
 import com.acme.product.exception.ResourceNotFoundException;
@@ -43,5 +47,14 @@ public abstract class AbstractWSController {
 	final String message = Optional.of(exception.getMessage()).orElse(exception.getClass().getSimpleName());
         final ErrorInfo errorInfo = new ErrorInfo(req.getRequestURI(), message);
         return new ResponseEntity < > (errorInfo, HttpStatus.NOT_FOUND);
+    }
+    
+    protected HttpHeaders appendLocationHeader(Long id) {
+    	UriComponentsBuilder builder = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}");
+		URI location = builder.buildAndExpand(id).toUri();
+		
+		HttpHeaders headers = new HttpHeaders();
+		headers.add(HttpHeaders.LOCATION, location.getPath());
+		return headers;
     }
 }

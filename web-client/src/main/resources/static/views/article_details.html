@@ -1,0 +1,46 @@
+
+<!-- Begin page content -->
+<div class="container">
+	<div class="row erp-page-header">
+		<h3>Article Details</h3>
+	</div>
+
+
+
+	<div class="row">
+	</div>
+
+	<div class="row" >
+			<div class="col-md-4 form-group">
+				<label > Name</label> 
+ 				<input type="text" class="form-control"	ng-model="device.name"/>	
+			</div>
+			<div class="col-md-4 form-group">
+				<label >Description</label> 
+ 				<input type="text" class="form-control"	ng-model="device.description"/>	
+			</div>
+						
+			<div class="col-md-4 form-group">
+				<label >Category<span style="color: red;">*</span></label> 
+				<select class="form-control" ng-model="device.category"	ng-options="r for r in deviceCategories">
+					<option value="">-- Device Category --</option>
+				</select>
+			</div>
+	</div>
+
+
+			
+	<div class="row" >
+			<div class="col-md-12 form-group">
+				<button type="button" ng-click="saveArticle(device)" ng-disabled="inProgress"
+					class="btn btn-success btn-sm">Save</button>
+				&nbsp;
+				<button type="button" ng-click="back()"
+					class="btn btn-default btn-sm">Back</button>
+				<p />
+			</div>
+	</div>
+
+	<!-- End of controller -->
+
+</div>
