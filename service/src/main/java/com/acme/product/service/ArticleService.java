@@ -2,8 +2,6 @@ package com.acme.product.service;
 
 import java.util.List;
 
-import org.springframework.http.ResponseEntity;
-
 import com.acme.product.domain.Article;
 
 /**
@@ -41,7 +39,7 @@ public interface ArticleService {
      * @param id
      * @return
      */
-    public ResponseEntity<?> delete(Long id);
+    public Long delete(Long id);
     
     /**
      * Load all article object

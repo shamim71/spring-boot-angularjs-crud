@@ -5,7 +5,6 @@ import java.util.List;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.acme.product.domain.Article;
@@ -36,11 +35,11 @@ public class ArticleServiceImpl implements ArticleService {
 	}
 
 	@Override
-	public ResponseEntity<?> delete(Long id) {
+	public Long delete(Long id) {
 
 		return articleRepository.findById(id).map(article -> {
 			articleRepository.delete(article);
-			return ResponseEntity.noContent().build();
+			return id;
 		}).orElseThrow(() -> new ResourceNotFoundException("Resource missing with id " + id));
 	}
 

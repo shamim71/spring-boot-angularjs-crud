@@ -5,17 +5,32 @@ controller('ArticleDetailsController', function($scope, $location, $routeParams,
 
 	$scope.device = {};
 	$scope.deviceCategories = ["Cell Phone","Tools", "Laptop"];
-	$scope.inProgress = false;
-	console.log($routeParams.id);
-	
+	$scope.update = false;
+
 	$scope.saveArticle = function(device) {
-		$scope.inProgress = true;
-		ArticleService.saveArticle(device).then(function(result){
-			$scope.inProgress = false;
-			$location.path('/list');
+		if($scope.update == true){
+			ArticleService.updateArticle(device.id, device).then(function(result){
+				$scope.back();
+			});
+		}
+		else{
+			ArticleService.saveArticle(device).then(function(result){
+				$scope.back();
+			});
+		}
+	};
+	
+	$scope.loadItem = function(id) {
+		ArticleService.getArticle(id).then(function(result){
+			$scope.device = result.data;
 		});
 	};
-
+	
+	if($routeParams.id != null || $routeParams.id == undefined){
+		$scope.update = true;
+		$scope.loadItem($routeParams.id);
+	}
+	
 	$scope.back = function() {
 		$location.path('/list');
 	};		

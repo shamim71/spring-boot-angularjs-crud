@@ -26,10 +26,10 @@ public class ServiceApplicationTests {
 
     @Autowired
     private MockMvc mvc;
-
+	 private static final String API_URL="/api/articles";
     @Test
     public void getArticleTest() throws Exception {
-	this.mvc.perform(get("/articles").accept(MediaType.parseMediaType("application/json;charset=UTF-8")))
+	this.mvc.perform(get(API_URL).accept(MediaType.parseMediaType("application/json;charset=UTF-8")))
 		.andExpect(status().isOk()).andExpect(content().contentType("application/json;charset=UTF-8"));
     }
 
@@ -41,13 +41,13 @@ public class ServiceApplicationTests {
 	article.setDescription("Phone");
 	article.setCategory("Device");
 
-	this.mvc.perform(post("/articles").contentType(MediaType.APPLICATION_JSON_UTF8)
+	this.mvc.perform(post(API_URL).contentType(MediaType.APPLICATION_JSON_UTF8)
 		.content(convertObjectToJsonBytes(article))).andDo(print()).andExpect(status().isCreated());
     }
 
     @Test
     public void getArticleByIdTest() throws Exception {
-	this.mvc.perform(get("/articles/1000").accept(MediaType.parseMediaType("application/json;charset=UTF-8")))
+	this.mvc.perform(get(API_URL+"/1000").accept(MediaType.parseMediaType("application/json;charset=UTF-8")))
 		.andExpect(status().isOk()).andExpect(content().contentType("application/json;charset=UTF-8"))
 		.andExpect(jsonPath("$.name").value("Hello"));
     }
